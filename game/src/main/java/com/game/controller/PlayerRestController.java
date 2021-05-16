@@ -139,6 +139,15 @@ public class PlayerRestController {
         setNewPropertiesForPlayer(playerToUpdate, playerToBeUpdated);
         setLevelAndUntilNextLevelForPlayer(playerToUpdate);
 
+        if (playerToUpdate.getExperience() < 0 || playerToUpdate.getExperience() > 10000000)
+            return new ResponseEntity<Player>(HttpStatus.BAD_REQUEST);
+
+        Date birthday = playerToUpdate.getBirthday();
+        Calendar minDate = new GregorianCalendar(2000, 0 , 1);
+        Calendar maxDate = new GregorianCalendar(3001, 0 , 1);
+        if (birthday == null || birthday.getTime() < 0 || birthday.before(minDate.getTime()) || !birthday.before(maxDate.getTime()))
+            return new ResponseEntity<Player>(HttpStatus.BAD_REQUEST);
+
         Player player = playerService.createPlayer(playerToUpdate);
 
         return new ResponseEntity<Player>(player, HttpStatus.OK);
