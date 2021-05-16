@@ -112,7 +112,10 @@ public class PlayerRestController {
         if (idIsValid(id)) longId = Long.parseLong(id);
         else return new ResponseEntity<Player>(HttpStatus.BAD_REQUEST);
 
-        Player player = playerService.getPlayer(longId);
+        Player player = null;
+        try {
+            player = playerService.getPlayer(longId);
+        } catch (Exception e) { return new ResponseEntity<Player>(HttpStatus.NOT_FOUND); }
         if (player == null) return new ResponseEntity<Player>(HttpStatus.NOT_FOUND);
 
         return new ResponseEntity<Player>(player, HttpStatus.OK);
@@ -127,7 +130,10 @@ public class PlayerRestController {
         if (idIsValid(id)) longId = Long.parseLong(id);
         else return new ResponseEntity<Player>(HttpStatus.BAD_REQUEST);
 
-        Player playerToUpdate = playerService.getPlayer(longId);
+        Player playerToUpdate = null;
+        try {
+            playerToUpdate = playerService.getPlayer(longId);
+        } catch (Exception e) { return new ResponseEntity<Player>(HttpStatus.NOT_FOUND); }
         if (playerToUpdate == null) return new ResponseEntity<Player>(HttpStatus.NOT_FOUND);
 
         setNewPropertiesForPlayer(playerToUpdate, playerToBeUpdated);
@@ -146,7 +152,10 @@ public class PlayerRestController {
         if (idIsValid(id)) longId = Long.parseLong(id);
         else return new ResponseEntity<Player>(HttpStatus.BAD_REQUEST);
 
-        Player playerToDelete = playerService.getPlayer(longId);
+        Player playerToDelete = null;
+        try {
+            playerToDelete = playerService.getPlayer(longId);
+        } catch (Exception e) { return new ResponseEntity<Player>(HttpStatus.NOT_FOUND); }
         if (playerToDelete == null) return new ResponseEntity<Player>(HttpStatus.NOT_FOUND);
 
         playerService.deletePlayer(longId);
